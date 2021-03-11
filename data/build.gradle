@@ -1,0 +1,85 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    defaultPublishConfig "debug"
+    def config = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion config["androidCompileSdkVersion"]
+    buildToolsVersion config["androidBuildToolsVersion"]
+
+
+    defaultConfig {
+        minSdkVersion config["androidMinSdkVersion"]
+        targetSdkVersion config["androidTargetSdkVersion"]
+        versionCode config["androidVersionCode"]
+        versionName config["androidVersionName"]
+
+        testInstrumentationRunner "com.peterstev.data.MockTestRunner"
+    }
+
+    lintOptions {
+        quiet true
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude "**/attach_hotspot_windows.dll"
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/licenses/ASM'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation project(':domain')
+
+    def deps = rootProject.ext.dataDependencies
+    def testDeps = rootProject.ext.dataTestDependencies
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation deps.daggerHilt
+    kapt deps.daggerHiltKaptCompiler
+    kapt deps.androidHiltKaptCompiler
+    implementation deps.coroutines
+    implementation deps.timber
+    implementation deps.retrofit
+    implementation deps.converterGson
+    debugImplementation deps.chuckInterceptorDebug
+    releaseImplementation deps.chuckInterceptorRelease
+
+    //test dependencies
+    testImplementation testDeps.jupiter
+    testRuntimeOnly testDeps.jupiterRuntime
+    testImplementation testDeps.truth
+    testImplementation testDeps.junit
+
+    androidTestImplementation testDeps.archCoreTest
+    androidTestImplementation testDeps.truth
+    androidTestImplementation testDeps.junitAndroidTestRunner
+    androidTestImplementation testDeps.junitAndroid
+    androidTestImplementation testDeps.coroutineTest
+    androidTestImplementation testDeps.hiltTest
+    androidTestImplementation testDeps.mokito
+    androidTestImplementation testDeps.mockWebServer
+    kaptAndroidTest testDeps.hiltKaptTestCompiler
+}

@@ -1,0 +1,104 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-android-extensions'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+
+    def config = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion config["androidCompileSdkVersion"]
+    buildToolsVersion config["androidBuildToolsVersion"]
+
+    defaultConfig {
+        applicationId config["androidApplicationId"]
+        minSdkVersion config["androidMinSdkVersion"]
+        targetSdkVersion config["androidTargetSdkVersion"]
+        versionCode config["androidVersionCode"]
+        versionName config["androidVersionName"]
+
+        testInstrumentationRunner "com.peterstev.trivago.AndroidTestRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    lintOptions {
+        quiet true
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
+    buildFeatures{
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    def deps = rootProject.ext.presentationDependencies
+    def testDeps = rootProject.ext.presentationTestDependencies
+
+    implementation project(':domain')
+    implementation project(':data')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    implementation deps.androidxCore
+    implementation deps.appcompat
+    implementation deps.material
+    implementation deps.constraintLayout
+    implementation deps.navFragment
+    implementation deps.navUi
+    implementation deps.lifecycleViewModel
+    implementation deps.lifecycleExtensions
+    implementation deps.lifecycleCommons
+    implementation deps.daggerHilt
+    kapt deps.daggerHiltKaptCompiler
+    implementation deps.androidHiltViewModel
+    kapt deps.androidHiltKaptCompiler
+    implementation deps.retrofit
+    implementation deps.converterGson
+    implementation deps.coroutines
+    implementation deps.timber
+
+
+    //test dependencies
+    testImplementation testDeps.junit
+    testImplementation testDeps.jupiter
+    testRuntimeOnly testDeps.jupiterRuntime
+    testImplementation testDeps.truth
+
+    androidTestImplementation testDeps.truth
+    androidTestImplementation testDeps.archCoreTest
+    androidTestImplementation testDeps.coroutineTest
+    androidTestImplementation testDeps.junitAndroid
+    androidTestImplementation testDeps.junitAndroidTestRunner
+    androidTestImplementation testDeps.hiltTest
+    kaptAndroidTest testDeps.hiltKaptTestCompiler
+}

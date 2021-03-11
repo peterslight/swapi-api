@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Trivago</string>
+    <string name="view_more">read more</string>
+    <string name="search_characters">search starwars characters</string>
+    <string name="search_not_found">no character found for your search, try another character</string>
+    <string name="search_hint">enter a character to search</string>
+    <string name="film">film</string>
+    <string name="result">result</string>
+    <string name="welcome_note">welcome note</string>
+    <string name="welcome">welcome to star wars character search engine, enter a character name to search</string>
+</resources>

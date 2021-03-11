@@ -1,0 +1,29 @@
+plugins {
+    id 'kotlin'
+}
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+
+    def testDeps = rootProject.ext.domainTestDependencies
+    def deps = rootProject.ext.domainDependencies
+    implementation deps.timber
+    implementation deps.converterGson
+
+    testImplementation testDeps.junit
+    testImplementation testDeps.jupiter
+    testRuntimeOnly testDeps.jupiterRuntime
+    testImplementation testDeps.truth
+}

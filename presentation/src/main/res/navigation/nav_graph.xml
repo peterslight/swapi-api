@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.peterstev.trivago.fragments.HomeFragment"
+        android:label="Home">
+
+        <action
+            android:id="@+id/action_home_fragment_to_detail_fragment"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out">
+            <argument
+                android:name="result"
+                android:defaultValue="@null"
+                app:argType="com.peterstev.domain.models.Result"
+                app:nullable="true" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.peterstev.trivago.fragments.DetailFragment"
+        android:label="Details">
+        <action
+            android:id="@+id/action_detail_fragment_to_home_fragment"
+            app:popUpTo="@id/homeFragment" />
+
+        <action
+            android:id="@+id/action_detail_fragment_to_full_detail_fragment"
+            app:destination="@id/detailFragmentFull"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out">
+
+            <argument
+                android:name="film"
+                android:defaultValue="@null"
+                app:argType="com.peterstev.domain.models.Film"
+                app:nullable="true" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragmentFull"
+        android:name="com.peterstev.trivago.fragments.FullDetailFragment"
+        android:label="Full Details">
+        <action
+            android:id="@+id/action_full_detail_fragment_to_detail_fragment"
+            app:popUpTo="@id/detailFragment" />
+    </fragment>
+</navigation>
